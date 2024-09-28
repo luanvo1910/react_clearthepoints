@@ -13,6 +13,7 @@ function App() {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [startTime, setStartTime] = useState(null);
   const [gameStarted, setGameStarted] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
 
   useEffect(() => {
     let timer;
@@ -36,6 +37,7 @@ function App() {
     setCurrentPointIndex(0);
     setElapsedTime(0);
     setGameStarted(true);
+    setGameOver(false);
   };
 
   const handlePointClick = (index) => {
@@ -59,6 +61,9 @@ function App() {
       if (currentPointIndex + 1 === n) {
         setGameStarted(false);
       }
+    } else {
+      setGameOver(true);
+      setGameStarted(false);
     }
   };
 
@@ -75,6 +80,7 @@ function App() {
       {gameStarted && (
         <h2>Elapsed Time: {(elapsedTime / 1000).toFixed(2)} seconds</h2>
       )}
+      {gameOver && <h2>Game Over!</h2>}
       <div style={{ position: 'relative', width: '800px', height: '600px', border: '1px solid black', margin: '20px auto' }}>
         {points.map((point, index) => (
           point.visible && (
@@ -104,7 +110,7 @@ function App() {
           )
         ))}
       </div>
-      {currentPointIndex === n && (
+      {!gameStarted && !gameOver && currentPointIndex === n && (
         <h2>All cleared in {(elapsedTime / 1000).toFixed(2)} seconds!</h2>
       )}
     </div>
